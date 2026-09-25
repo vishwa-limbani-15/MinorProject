@@ -1,0 +1,29 @@
+{
+  "version": "3",
+  "description": "Dynamic staff-level hospital workforce environment smoke test",
+  "start_date": "2025-11-03",
+  "forced_absent_staff": [
+    "S0017",
+    "S0033"
+  ],
+  "forced_demand_surge": {
+    "unit": "MedSurg",
+    "shift": "Day",
+    "extra_staff": 2
+  },
+  "episode_steps": 3,
+  "total_reward": -12.994897959183675,
+  "final_state_length": 55,
+  "final_metrics": {
+    "required": 187.0,
+    "assigned": 126.0,
+    "shortage": 63.0,
+    "coverage": 0.6737967914438503,
+    "skill_required": 49.0,
+    "skill_shortage": 10.0,
+    "skill_coverage": 0.7959183673469388,
+    "workload_gini": 0.25318102083600746,
+    "overtime": 0.0,
+    "preference_score": 0.5187222222222222
+  }
+}

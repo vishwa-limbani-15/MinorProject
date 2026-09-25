@@ -1,0 +1,18 @@
+{
+  "version": "4",
+  "description": "PPO training and paired dynamic evaluation on the V3 environment",
+  "state_dim": 55,
+  "action_dim": 65,
+  "training_episodes": 150,
+  "evaluation_episodes": 20,
+  "device": "cpu",
+  "mean_ppo_coverage": 0.253543613517469,
+  "mean_noop_coverage": 0.253543613517469,
+  "mean_ppo_shortage": 142.35,
+  "mean_noop_shortage": 142.35,
+  "mean_ppo_skill_shortage": 13.95,
+  "mean_noop_skill_shortage": 13.3,
+  "mean_ppo_workload_gini": 0.5097470974007079,
+  "mean_noop_workload_gini": 0.5097470974007079,
+  "mean_ppo_reassignments": 7.0
+}

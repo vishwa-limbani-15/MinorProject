@@ -1,0 +1,29 @@
+{
+  "version": "3.1.1",
+  "description": "V3.1.1 dynamic staff-level hospital workforce environment validation smoke test",
+  "start_date": "2025-11-03",
+  "forced_absent_staff": [
+    "S0074",
+    "S0106"
+  ],
+  "forced_demand_surge": {
+    "unit": "MedSurg",
+    "shift": "Day",
+    "extra_staff": 2
+  },
+  "episode_steps": 3,
+  "total_reward": -12.994897959183675,
+  "final_state_length": 55,
+  "final_metrics": {
+    "required": 192.0,
+    "assigned": 42.0,
+    "shortage": 150.0,
+    "coverage": 0.21875,
+    "skill_required": 49.0,
+    "skill_shortage": 18.0,
+    "skill_coverage": 0.6326530612244898,
+    "workload_gini": 0.5198908842918846,
+    "overtime": 0.0,
+    "preference_score": 0.5109285714285714
+  }
+}

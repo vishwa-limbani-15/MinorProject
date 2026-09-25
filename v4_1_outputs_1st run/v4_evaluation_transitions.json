@@ -1,0 +1,1662 @@
+[
+  {
+    "episode": 1,
+    "start_date": "2025-11-03",
+    "forced_event": {
+      "date": "2025-11-03",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0047",
+        "S0068"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0029",
+        "date": "2025-11-03",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0223",
+        "date": "2025-11-04",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0001",
+        "date": "2025-11-05",
+        "source_unit": "Pediatrics",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0176",
+        "date": "2025-11-06",
+        "source_unit": "Surgery",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0221",
+        "date": "2025-11-07",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0043",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 2,
+    "start_date": "2025-11-04",
+    "forced_event": {
+      "date": "2025-11-04",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0036",
+        "S0092"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-04",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0001",
+        "date": "2025-11-05",
+        "source_unit": "Pediatrics",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0176",
+        "date": "2025-11-06",
+        "source_unit": "Surgery",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0221",
+        "date": "2025-11-07",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0043",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 3,
+    "start_date": "2025-11-05",
+    "forced_event": {
+      "date": "2025-11-05",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0055",
+        "S0014"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-05",
+        "source_unit": "Pediatrics",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0176",
+        "date": "2025-11-06",
+        "source_unit": "Surgery",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0221",
+        "date": "2025-11-07",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0043",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      }
+    ]
+  },
+  {
+    "episode": 4,
+    "start_date": "2025-11-06",
+    "forced_event": {
+      "date": "2025-11-06",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0021",
+        "S0110"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0170",
+        "date": "2025-11-06",
+        "source_unit": "Pediatrics",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0221",
+        "date": "2025-11-07",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0043",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 5,
+    "start_date": "2025-11-07",
+    "forced_event": {
+      "date": "2025-11-07",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0150",
+        "S0235"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0070",
+        "date": "2025-11-07",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0043",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 6,
+    "start_date": "2025-11-08",
+    "forced_event": {
+      "date": "2025-11-08",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0147",
+        "S0168"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0238",
+        "date": "2025-11-08",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0010",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      }
+    ]
+  },
+  {
+    "episode": 7,
+    "start_date": "2025-11-09",
+    "forced_event": {
+      "date": "2025-11-09",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0102",
+        "S0145"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0117",
+        "date": "2025-11-09",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0133",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 8,
+    "start_date": "2025-11-10",
+    "forced_event": {
+      "date": "2025-11-10",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0013",
+        "S0107"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0161",
+        "date": "2025-11-10",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0021",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      }
+    ]
+  },
+  {
+    "episode": 9,
+    "start_date": "2025-11-11",
+    "forced_event": {
+      "date": "2025-11-11",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0019",
+        "S0047"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0152",
+        "date": "2025-11-11",
+        "source_unit": "Emergency",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0033",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 10,
+    "start_date": "2025-11-12",
+    "forced_event": {
+      "date": "2025-11-12",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0092",
+        "S0136"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0151",
+        "date": "2025-11-12",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0154",
+        "date": "2025-11-13",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 11,
+    "start_date": "2025-11-13",
+    "forced_event": {
+      "date": "2025-11-13",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0124",
+        "S0223"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0049",
+        "date": "2025-11-13",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0072",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Emergency",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 12,
+    "start_date": "2025-11-14",
+    "forced_event": {
+      "date": "2025-11-14",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0055",
+        "S0083"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0049",
+        "date": "2025-11-14",
+        "source_unit": "Pediatrics",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0129",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 13,
+    "start_date": "2025-11-15",
+    "forced_event": {
+      "date": "2025-11-15",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0194",
+        "S0059"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0203",
+        "date": "2025-11-15",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0207",
+        "date": "2025-11-16",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "Surgery",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 14,
+    "start_date": "2025-11-16",
+    "forced_event": {
+      "date": "2025-11-16",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0033",
+        "S0110"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0196",
+        "date": "2025-11-16",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 15,
+    "start_date": "2025-11-17",
+    "forced_event": {
+      "date": "2025-11-17",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0035",
+        "S0104"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0175",
+        "date": "2025-11-17",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0073",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      }
+    ]
+  },
+  {
+    "episode": 16,
+    "start_date": "2025-11-18",
+    "forced_event": {
+      "date": "2025-11-18",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0049",
+        "S0092"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-18",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0068",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0252",
+        "date": "2025-11-24",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      }
+    ]
+  },
+  {
+    "episode": 17,
+    "start_date": "2025-11-19",
+    "forced_event": {
+      "date": "2025-11-19",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0114",
+        "S0005"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0251",
+        "date": "2025-11-19",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0169",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0252",
+        "date": "2025-11-24",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-25",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 18,
+    "start_date": "2025-11-20",
+    "forced_event": {
+      "date": "2025-11-20",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0006",
+        "S0048"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0192",
+        "date": "2025-11-20",
+        "source_unit": "Emergency",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0104",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0252",
+        "date": "2025-11-24",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-25",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0253",
+        "date": "2025-11-26",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  },
+  {
+    "episode": 19,
+    "start_date": "2025-11-21",
+    "forced_event": {
+      "date": "2025-11-21",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0035",
+        "S0043"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0118",
+        "date": "2025-11-21",
+        "source_unit": "MedSurg",
+        "source_shift": "Night",
+        "target_unit": "Emergency",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0243",
+        "date": "2025-11-22",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0252",
+        "date": "2025-11-24",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-25",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0253",
+        "date": "2025-11-26",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0225",
+        "date": "2025-11-27",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      }
+    ]
+  },
+  {
+    "episode": 20,
+    "start_date": "2025-11-22",
+    "forced_event": {
+      "date": "2025-11-22",
+      "demand_surge": [
+        {
+          "unit": "MedSurg",
+          "shift": "Day",
+          "extra_staff": 2
+        }
+      ],
+      "absent_staff": [
+        "S0035",
+        "S0055"
+      ]
+    },
+    "ppo_actions": [
+      {
+        "type": "reassign",
+        "staff_id": "S0080",
+        "date": "2025-11-22",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0257",
+        "date": "2025-11-23",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Emergency",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0252",
+        "date": "2025-11-24",
+        "source_unit": "ICU",
+        "source_shift": "Day",
+        "target_unit": "Surgery",
+        "target_shift": "Day"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0146",
+        "date": "2025-11-25",
+        "source_unit": "ICU",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0253",
+        "date": "2025-11-26",
+        "source_unit": "Surgery",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0225",
+        "date": "2025-11-27",
+        "source_unit": "ICU",
+        "source_shift": "Evening",
+        "target_unit": "MedSurg",
+        "target_shift": "Evening"
+      },
+      {
+        "type": "reassign",
+        "staff_id": "S0162",
+        "date": "2025-11-28",
+        "source_unit": "Pediatrics",
+        "source_shift": "Night",
+        "target_unit": "MedSurg",
+        "target_shift": "Night"
+      }
+    ]
+  }
+]

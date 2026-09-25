@@ -1,0 +1,155 @@
+[
+  {
+    "step": 0,
+    "date": "2025-11-03",
+    "action": {
+      "type": "reassign",
+      "staff_id": "S0010",
+      "date": "2025-11-03",
+      "source_unit": "ICU",
+      "source_shift": "Night",
+      "target_unit": "MedSurg",
+      "target_shift": "Night"
+    },
+    "valid_action": true,
+    "changed": true,
+    "reward": -0.25,
+    "before": {
+      "required": 192.0,
+      "assigned": 133.0,
+      "shortage": 59.0,
+      "coverage": 0.6927083333333334,
+      "skill_required": 49.0,
+      "skill_shortage": 3.0,
+      "skill_coverage": 0.9387755102040817,
+      "workload_gini": 0.25249022607513183,
+      "overtime": 0.0,
+      "preference_score": 0.5196390977443609
+    },
+    "after": {
+      "required": 192.0,
+      "assigned": 133.0,
+      "shortage": 59.0,
+      "coverage": 0.6927083333333334,
+      "skill_required": 49.0,
+      "skill_shortage": 3.0,
+      "skill_coverage": 0.9387755102040817,
+      "workload_gini": 0.25249022607513183,
+      "overtime": 0.0,
+      "preference_score": 0.5196390977443609
+    },
+    "event": {
+      "date": "2025-11-04",
+      "demand_surge": [],
+      "absent_staff": [
+        "S0005",
+        "S0021",
+        "S0250"
+      ]
+    },
+    "candidate_count": 65,
+    "state_length": 55
+  },
+  {
+    "step": 1,
+    "date": "2025-11-04",
+    "action": {
+      "type": "reassign",
+      "staff_id": "S0002",
+      "date": "2025-11-04",
+      "source_unit": "Pediatrics",
+      "source_shift": "Day",
+      "target_unit": "MedSurg",
+      "target_shift": "Day"
+    },
+    "valid_action": true,
+    "changed": true,
+    "reward": -0.25,
+    "before": {
+      "required": 187.0,
+      "assigned": 136.0,
+      "shortage": 51.0,
+      "coverage": 0.7272727272727273,
+      "skill_required": 49.0,
+      "skill_shortage": 7.0,
+      "skill_coverage": 0.8571428571428571,
+      "workload_gini": 0.25317556763671245,
+      "overtime": 0.0,
+      "preference_score": 0.5133749999999999
+    },
+    "after": {
+      "required": 187.0,
+      "assigned": 136.0,
+      "shortage": 51.0,
+      "coverage": 0.7272727272727273,
+      "skill_required": 49.0,
+      "skill_shortage": 7.0,
+      "skill_coverage": 0.8571428571428571,
+      "workload_gini": 0.25317556763671245,
+      "overtime": 0.0,
+      "preference_score": 0.5133749999999999
+    },
+    "event": {
+      "date": "2025-11-05",
+      "demand_surge": [],
+      "absent_staff": [
+        "S0014",
+        "S0031",
+        "S0205"
+      ]
+    },
+    "candidate_count": 65,
+    "state_length": 55
+  },
+  {
+    "step": 2,
+    "date": "2025-11-05",
+    "action": {
+      "type": "reassign",
+      "staff_id": "S0038",
+      "date": "2025-11-05",
+      "source_unit": "ICU",
+      "source_shift": "Day",
+      "target_unit": "MedSurg",
+      "target_shift": "Day"
+    },
+    "valid_action": true,
+    "changed": true,
+    "reward": -12.494897959183675,
+    "before": {
+      "required": 187.0,
+      "assigned": 126.0,
+      "shortage": 63.0,
+      "coverage": 0.6737967914438503,
+      "skill_required": 49.0,
+      "skill_shortage": 9.0,
+      "skill_coverage": 0.8163265306122449,
+      "workload_gini": 0.25318102083600746,
+      "overtime": 0.0,
+      "preference_score": 0.5187222222222222
+    },
+    "after": {
+      "required": 187.0,
+      "assigned": 126.0,
+      "shortage": 63.0,
+      "coverage": 0.6737967914438503,
+      "skill_required": 49.0,
+      "skill_shortage": 10.0,
+      "skill_coverage": 0.7959183673469388,
+      "workload_gini": 0.25318102083600746,
+      "overtime": 0.0,
+      "preference_score": 0.5187222222222222
+    },
+    "event": {
+      "date": "2025-11-05",
+      "demand_surge": [],
+      "absent_staff": [
+        "S0014",
+        "S0031",
+        "S0205"
+      ]
+    },
+    "candidate_count": 65,
+    "state_length": 55
+  }
+]

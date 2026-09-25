@@ -1,0 +1,17 @@
+{
+  "valid": true,
+  "errors": [],
+  "checks": {
+    "one_shift_per_day": true,
+    "availability": true,
+    "request_off": true,
+    "weekly_hours": true,
+    "skill_requirements": false
+  },
+  "duplicate_staff_day": 0,
+  "unavailable_assignments": 0,
+  "request_off_violations": 0,
+  "weekly_hour_violations": 0,
+  "skill_shortfall": 504,
+  "skill_requirement_total": 2673
+}

@@ -1,0 +1,21 @@
+{
+  "solver_status": "FEASIBLE",
+  "solve_time_seconds": 121.09435659996234,
+  "planning_days": 56,
+  "demand_rows": 840,
+  "staff_count": 265,
+  "total_required_positions": 10593.0,
+  "total_assigned_positions": 3442.0,
+  "uncovered_positions": 7151.0,
+  "staffing_coverage_percent": 32.49315585764184,
+  "skill_requirements_total": 2759.0,
+  "skill_shortfall_total": 590.0,
+  "skill_fulfillment_percent": 78.61544037694816,
+  "preference_satisfaction_percent": 8.018593840790238,
+  "request_off_violations": 0.0,
+  "weekly_hours_overage": 0.0,
+  "workload_gini": 0.29817898764430506,
+  "mean_workload_hours": 103.90943396226415,
+  "std_workload_hours": 55.31432740855423,
+  "max_workload_hours": 288.0
+}
