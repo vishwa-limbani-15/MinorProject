@@ -1,0 +1,42 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE settings
+.idea/
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+
+# Generated project outputs
+v2_outputs/
+v4_4_outputs/
+v4_4_smoke_test/
+v4_5_outputs/
+v4_5_evaluation/
+
+# Model checkpoints
+*.pt
+*.pth
+*.ckpt
+
+# Environment variables
+.env
+
+# Python packaging
+build/
+dist/
+*.egg-info/

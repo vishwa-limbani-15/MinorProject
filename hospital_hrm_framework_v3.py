@@ -533,44 +533,62 @@ class DynamicHospitalWorkforceEnvironment:
         return True
 
     def get_valid_actions(self) -> List[Dict[str, object]]:
-        """Return [no-op, candidate staff-level moves]."""
+        """Return no-op plus operationally valid moves, prioritizing the active event.
+
+        A surge target is considered before unrelated shortages. Moves remain
+        within the same date and shift, and the V3 validator remains authoritative.
+        """
         date = pd.Timestamp(self.current_date)
         actions: List[Dict[str, object]] = [{"type": "no_op"}]
-        targets = self._target_units(date)
-        assignments = self._source_assignments(date)
+        source_assignments = self._source_assignments(date)
 
-        # Source units with less urgent shortage are considered first.
-        source_rows = []
-        for row in assignments.itertuples(index=False):
-            m = self._group_metrics(date, row.unit, row.shift)
-            source_rows.append((m["shortage"] * 100 + m["skill_shortage"], row))
-        source_rows.sort(key=lambda x: x[0])
+        # Put currently surged unit/shift groups first, even if other hospital
+        # shortages are numerically larger.
+        targets: List[Tuple[str, str]] = []
+        for item in (self.last_event or {}).get("demand_surge", []):
+            pair = (str(item.get("unit", "")), normalize_shift(str(item.get("shift", "Day"))))
+            if pair not in targets:
+                targets.append(pair)
+        for pair in self._target_units(date):
+            if pair not in targets:
+                targets.append(pair)
 
+        # For each target, prioritize source groups with the greatest surplus.
         for target_unit, target_shift in targets:
-            target_m = self._group_metrics(date, target_unit, target_shift)
-            for _, row in source_rows:
-                if str(row.unit) == target_unit and normalize_shift(row.shift) == target_shift:
+            target_metrics = self._group_metrics(date, target_unit, target_shift)
+            if target_metrics["shortage"] <= 0 and target_metrics["skill_shortage"] <= 0:
+                continue
+
+            source_rows = []
+            for row in source_assignments.itertuples(index=False):
+                source_unit = str(row.unit)
+                source_shift = normalize_shift(str(row.shift))
+                if source_shift != target_shift or source_unit == target_unit:
                     continue
-                # Do not strip a unit below its required total staffing unless
-                # the target shortage is more severe than the source situation.
-                source_m = self._group_metrics(date, str(row.unit), normalize_shift(row.shift))
-                if source_m["assigned"] <= source_m["required"] and target_m["shortage"] <= source_m["shortage"]:
+                source_metrics = self._group_metrics(date, source_unit, source_shift)
+                surplus = float(source_metrics["assigned"] - source_metrics["required"])
+                # Keep staff in a source group unless there is surplus, or the
+                # target has a more urgent total/skill shortage.
+                if surplus <= 0 and target_metrics["shortage"] <= source_metrics["shortage"]:
                     continue
+                source_rows.append((surplus, source_metrics["shortage"], row))
+            source_rows.sort(key=lambda x: (x[0], -x[1]), reverse=True)
+
+            for _, _, row in source_rows:
                 sid = str(row.staff_id)
-                if not self._is_valid_move(
-                    sid, str(row.unit), normalize_shift(row.shift), target_unit, target_shift
-                ):
+                source_unit = str(row.unit)
+                source_shift = normalize_shift(str(row.shift))
+                if not self._is_valid_move(sid, source_unit, source_shift, target_unit, target_shift):
                     continue
-                action = {
+                actions.append({
                     "type": "reassign",
                     "staff_id": sid,
                     "date": normalize_date(date),
-                    "source_unit": str(row.unit),
-                    "source_shift": normalize_shift(row.shift),
+                    "source_unit": source_unit,
+                    "source_shift": source_shift,
                     "target_unit": target_unit,
                     "target_shift": target_shift,
-                }
-                actions.append(action)
+                })
                 if len(actions) >= self.config.max_candidates + 1:
                     return actions
         return actions

@@ -1,14 +1,14 @@
 """
-Hospital HRM Framework - Version 4
+Hospital HRM Framework - Version 4.4
 ==================================
 
-V4 adds the first trainable RL layer on top of the validated V3 environment.
+V4.4 improves the V4.2 hybrid PPO-assisted scheduler with safer, hospital-wide action scoring and paired evaluation diagnostics.
 
 Pipeline
 --------
 V2 skill-aware CP-SAT baseline
     -> V3 dynamic staff-level environment
-    -> V4 PPO policy
+    -> V4.4 PPO-assisted policy
     -> controlled evaluation against no-op baseline
 
 Design choices
@@ -45,17 +45,17 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.distributions import Categorical
 
-from hospital_hrm_framework_v2 import normalize_date
 from hospital_hrm_framework_v3 import (
     DynamicHospitalWorkforceEnvironment,
     V3EnvironmentConfig,
     load_v2_baseline,
+    normalize_date,
     normalize_shift,
     safe_divide,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
-logger = logging.getLogger("hospital_hrm_v4")
+logger = logging.getLogger("hospital_hrm_v4_4")
 
 
 @dataclass
@@ -75,7 +75,7 @@ class V4PPOConfig:
     episode_days: int = 7
     max_candidates: int = 64
     time_limit: int = 120
-    output_dir: str = "v4_outputs"
+    output_dir: str = "v4_4_outputs"
 
 
 class EventAwareHospitalWorkforceEnvironment(DynamicHospitalWorkforceEnvironment):
@@ -180,15 +180,15 @@ class EventAwareHospitalWorkforceEnvironment(DynamicHospitalWorkforceEnvironment
         event_after = self._event_focus_metrics()
 
         reward = 0.0
-        # Strong immediate signal for resolving the affected event.
-        reward += 8.0 * (event_before["coverage"] - event_after["coverage"]) * -1.0
+        # Hospital-wide shortage reductions are the primary objective. Event
+        # gains are secondary, preventing the agent from merely relocating a
+        # deficit from one unit to another.
+        reward += 20.0 * (before["shortage"] - after["shortage"])
+        reward += 12.0 * (before["skill_shortage"] - after["skill_shortage"])
+        reward += 3.0 * (after["coverage"] - before["coverage"])
+        reward += 3.0 * (after["skill_coverage"] - before["skill_coverage"])
         reward += 4.0 * (event_before["shortage"] - event_after["shortage"])
         reward += 5.0 * (event_before["skill_shortage"] - event_after["skill_shortage"])
-        # Preserve hospital-wide objectives.
-        reward += 4.0 * (after["coverage"] - before["coverage"])
-        reward += 5.0 * (after["skill_coverage"] - before["skill_coverage"])
-        reward -= 1.5 * (after["shortage"] - before["shortage"])
-        reward -= 2.0 * (after["skill_shortage"] - before["skill_shortage"])
         reward -= 4.0 * max(0.0, after["workload_gini"] - before["workload_gini"])
         reward -= 3.0 * max(0.0, after["overtime"] - before["overtime"])
         reward -= 2.0 * max(0.0, before["preference_score"] - after["preference_score"])
@@ -197,11 +197,10 @@ class EventAwareHospitalWorkforceEnvironment(DynamicHospitalWorkforceEnvironment
         if not valid:
             reward -= 2.0
 
-        # Bonus for completely resolving the affected shortage.
         if event_before["shortage"] > 0 and event_after["shortage"] == 0:
-            reward += 8.0
+            reward += 4.0
         if event_before["skill_shortage"] > 0 and event_after["skill_shortage"] == 0:
-            reward += 10.0
+            reward += 5.0
 
         self.last_action = action
         action_date = pd.Timestamp(self.current_date)
@@ -261,7 +260,15 @@ class PPOAgent:
         self.optimizer = optim.Adam(self.model.parameters(), lr=config.learning_rate)
 
     def _masked_dist(self, logits: torch.Tensor, mask: torch.Tensor):
-        masked = logits.masked_fill(~mask, torch.finfo(logits.dtype).min)
+        # Numerical guard: PPO can become unstable when an update produces
+        # non-finite logits. Keep the policy distribution valid without
+        # changing the action-mask semantics.
+        logits = torch.nan_to_num(logits, nan=0.0, posinf=20.0, neginf=-20.0)
+        safe_mask = mask.clone()
+        no_valid = ~safe_mask.any(dim=-1)
+        if no_valid.any():
+            safe_mask[no_valid, 0] = True
+        masked = logits.masked_fill(~safe_mask, -1e9)
         return Categorical(logits=masked)
 
     @torch.no_grad()
@@ -277,7 +284,13 @@ class PPOAgent:
 
     def evaluate_actions(self, states, actions, masks):
         logits, values = self.model(states)
-        masked = logits.masked_fill(~masks, torch.finfo(logits.dtype).min)
+        logits = torch.nan_to_num(logits, nan=0.0, posinf=20.0, neginf=-20.0)
+        values = torch.nan_to_num(values, nan=0.0, posinf=1e4, neginf=-1e4)
+        safe_masks = masks.clone()
+        no_valid = ~safe_masks.any(dim=-1)
+        if no_valid.any():
+            safe_masks[no_valid, 0] = True
+        masked = logits.masked_fill(~safe_masks, -1e9)
         dist = Categorical(logits=masked)
         return dist.log_prob(actions), dist.entropy(), values
 
@@ -289,7 +302,13 @@ class PPOAgent:
         returns = torch.as_tensor(batch["returns"], dtype=torch.float32, device=device)
         advantages = torch.as_tensor(batch["advantages"], dtype=torch.float32, device=device)
         masks = torch.as_tensor(batch["masks"], dtype=torch.bool, device=device)
-        advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
+        # std(unbiased=False) is important for one-transition episodes;
+        # the default unbiased estimator is NaN when there is only one value.
+        advantages = torch.nan_to_num(advantages, nan=0.0, posinf=1e4, neginf=-1e4)
+        adv_std = advantages.std(unbiased=False)
+        advantages = (advantages - advantages.mean()) / torch.clamp(adv_std, min=1e-8)
+        returns = torch.nan_to_num(returns, nan=0.0, posinf=1e4, neginf=-1e4)
+        old_log_probs = torch.nan_to_num(old_log_probs, nan=0.0, posinf=0.0, neginf=0.0)
 
         n = len(states)
         indices = np.arange(n)
@@ -310,14 +329,21 @@ class PPOAgent:
                     1.0 + self.config.clip_epsilon,
                 ) * advantages[mb]
                 policy_loss = -torch.min(surr1, surr2).mean()
-                value_loss = nn.functional.mse_loss(values, returns[mb])
+                value_loss = nn.functional.smooth_l1_loss(values, returns[mb])
                 entropy_bonus = entropy.mean()
                 loss = policy_loss + self.config.value_coef * value_loss - self.config.entropy_coef * entropy_bonus
+                if not torch.isfinite(loss):
+                    self.optimizer.zero_grad()
+                    continue
 
                 self.optimizer.zero_grad()
                 loss.backward()
                 nn.utils.clip_grad_norm_(self.model.parameters(), self.config.max_grad_norm)
                 self.optimizer.step()
+                # Final guard against a rare non-finite optimizer update.
+                with torch.no_grad():
+                    for param in self.model.parameters():
+                        param.data.copy_(torch.nan_to_num(param.data, nan=0.0, posinf=5.0, neginf=-5.0))
                 losses.append(float(loss.item()))
         return float(np.mean(losses)) if losses else 0.0
 
@@ -433,10 +459,15 @@ def train_agent(data, roster, config: V4PPOConfig):
 def build_forced_scenario(data, start_date: pd.Timestamp):
     demand = data["demand_shift"].copy()
     demand["date"] = pd.to_datetime(demand["date"])
-    rows = demand[demand["date"] == pd.Timestamp(start_date)]
+    rows = demand[demand["date"] == pd.Timestamp(start_date)].copy()
     if rows.empty:
         raise ValueError(f"No demand rows for {start_date.date()}")
-    target = rows.sort_values("required_staff", ascending=False).iloc[0]
+    # Rotate evaluation targets across different unit/shift groups rather than
+    # repeatedly testing only the single largest requirement.
+    dates = sorted(pd.to_datetime(demand["date"].unique()))
+    date_index = dates.index(pd.Timestamp(start_date))
+    rows = rows.sort_values(["required_staff", "unit", "shift"], ascending=[False, True, True])
+    target = rows.iloc[date_index % len(rows)]
     return {
         "date": str(pd.Timestamp(start_date).date()),
         "demand_surge": [{
@@ -447,23 +478,100 @@ def build_forced_scenario(data, start_date: pd.Timestamp):
     }, str(target["unit"]), str(target["shift"])
 
 
+
+def select_adaptive_action(env, agent: PPOAgent, state: np.ndarray) -> int:
+    """Constrained PPO-assisted one-step lookahead.
+
+    Candidate indices are state-dependent, so PPO is deliberately only a tiny
+    tie-breaker; operational impact is computed by applying each candidate to a
+    copied roster and measuring the actual before/after state. This is safer than
+    trusting an unvalidated policy logit to make a staffing change.
+    """
+    env.candidates = env.get_valid_actions()
+    candidates = env.candidates
+    if len(candidates) <= 1:
+        return 0
+
+    try:
+        proposed, _, _ = agent.act(
+            state, min(len(candidates), agent.model.policy_head.out_features),
+            deterministic=True
+        )
+    except Exception:
+        proposed = 0
+
+    before_global = env._all_metrics()
+    before_event = env._event_focus_metrics()
+    original_roster = env.roster.copy(deep=True)
+    scored = [(0.0, 0)]
+
+    for idx, action in enumerate(candidates[1:], start=1):
+        if action.get("type") != "reassign":
+            continue
+        env.roster = original_roster.copy(deep=True)
+        try:
+            valid = env._apply_action(action)
+            if not valid:
+                continue
+            after_global = env._all_metrics()
+            after_event = env._event_focus_metrics()
+        except Exception:
+            continue
+
+        global_shortage_gain = before_global["shortage"] - after_global["shortage"]
+        global_skill_gain = before_global["skill_shortage"] - after_global["skill_shortage"]
+        event_shortage_gain = before_event["shortage"] - after_event["shortage"]
+        event_skill_gain = before_event["skill_shortage"] - after_event["skill_shortage"]
+
+        # Safety gate: don't fix one unit by creating a worse hospital-wide
+        # headcount or skill deficit elsewhere. The exact whole-hospital metrics
+        # include both the destination and source group, not just the target.
+        eps = 1e-9
+        if global_shortage_gain < -eps or global_skill_gain < -eps:
+            continue
+
+        fairness_cost = max(0.0, after_global["workload_gini"] - before_global["workload_gini"])
+        overtime_cost = max(0.0, after_global["overtime"] - before_global["overtime"])
+        preference_cost = max(0.0, before_global["preference_score"] - after_global["preference_score"])
+
+        # Lexicographic-style weights: hospital-wide gains dominate event-local
+        # gains. Because moves are headcount-conserving, a move from a unit with
+        # no surplus will usually be rejected unless the global metrics improve.
+        score = (
+            100.0 * global_shortage_gain
+            + 30.0 * global_skill_gain
+            + 8.0 * event_shortage_gain
+            + 10.0 * event_skill_gain
+            - 5.0 * fairness_cost
+            - 4.0 * overtime_cost
+            - 2.0 * preference_cost
+            - 0.10
+        )
+        if idx == proposed:
+            score += 0.001
+        scored.append((float(score), idx))
+
+    env.roster = original_roster
+    best_score, best_idx = max(scored, key=lambda item: item[0])
+    # A no-op is preferred unless the move has a measurable positive net benefit.
+    if best_idx == 0 or best_score <= 0.0:
+        return 0
+    return int(best_idx)
+
+
 def evaluate_policy(data, roster, agent: PPOAgent, config: V4PPOConfig, episodes: int = 20):
+    """Paired evaluation of the adaptive selector against a no-adaptation baseline."""
     dates = sorted(pd.to_datetime(data["demand_shift"]["date"].unique()))
     records = []
     transitions = []
+
     for i in range(episodes):
         start = pd.Timestamp(dates[i % len(dates)])
-        env = make_env(data, roster, config, config.seed + 10000 + i)
         forced, target_unit, target_shift = build_forced_scenario(data, start)
 
-        # Select two baseline-assigned staff to make the absence scenario
-        # reproducible while preserving exactly the same events for PPO and
-        # the no-op baseline. Empty forced events on the remaining episode
-        # dates disable V3's random event generator during evaluation.
         day_staff = roster[pd.to_datetime(roster["date"]) == start]["staff_id"].astype(str).unique().tolist()
-        forced["absent_staff"] = day_staff[: min(2, len(day_staff))]
-        episode_dates = sorted(pd.to_datetime(data["demand_shift"]["date"].unique()))
-        episode_dates = [d for d in episode_dates if d >= start][:config.episode_days]
+        forced["absent_staff"] = day_staff[:min(2, len(day_staff))]
+        episode_dates = [d for d in dates if d >= start][:config.episode_days]
         forced_events = [forced]
         for d in episode_dates[1:]:
             forced_events.append({
@@ -472,80 +580,91 @@ def evaluate_policy(data, roster, agent: PPOAgent, config: V4PPOConfig, episodes
                 "absent_staff": [],
             })
 
-        ppo_state = env.reset(start_date=str(start.date()), forced_events=forced_events)
-        initial_metrics = env._all_metrics()
-        ppo_total = 0.0
-        ppo_actions = []
-        ppo_event_shortage_reduction = 0.0
-        ppo_event_skill_reduction = 0.0
-        ppo_event_shortage_resolved = False
-        ppo_event_skill_resolved = False
-        while not env.done:
-            valid_count = min(len(env.candidates), agent.model.policy_head.out_features)
-            action, _, _ = agent.act(ppo_state, valid_count, deterministic=True)
-            ppo_state, reward, done, info = env.step(action)
-            ppo_total += reward
-            ppo_actions.append(info["action"])
-            ppo_event_shortage_reduction += info["event_shortage_reduction"]
-            ppo_event_skill_reduction += info["event_skill_shortage_reduction"]
-            if info["event_before"]["shortage"] > 0 and info["event_after"]["shortage"] == 0:
-                ppo_event_shortage_resolved = True
-            if info["event_before"]["skill_shortage"] > 0 and info["event_after"]["skill_shortage"] == 0:
-                ppo_event_skill_resolved = True
+        def run_episode(adaptive: bool):
+            env = make_env(data, roster, config, config.seed + 10000 + i)
+            state = env.reset(start_date=str(start.date()), forced_events=forced_events)
+            total_reward = 0.0
+            actions = []
+            event_shortage_reduction = 0.0
+            event_skill_reduction = 0.0
+            shortage_resolved = False
+            skill_resolved = False
+            daily_before = []
+            daily_after = []
+            while not env.done:
+                # V4.3 only inspected the final day's metrics, which could hide
+                # improvements made on the forced-event day. V4.4 evaluates every
+                # transition across the entire episode using paired scenarios.
+                daily_before.append(dict(env._all_metrics()))
+                if adaptive:
+                    action_idx = select_adaptive_action(env, agent, state)
+                else:
+                    action_idx = 0
+                state, reward, done, info = env.step(action_idx)
+                total_reward += float(reward)
+                actions.append(info["action"])
+                daily_after.append(dict(info["after"]))
+                event_shortage_reduction += float(info["event_shortage_reduction"])
+                event_skill_reduction += float(info["event_skill_shortage_reduction"])
+                if info["event_before"]["shortage"] > 0 and info["event_after"]["shortage"] == 0:
+                    shortage_resolved = True
+                if info["event_before"]["skill_shortage"] > 0 and info["event_after"]["skill_shortage"] == 0:
+                    skill_resolved = True
+            def average_metrics(rows):
+                keys = rows[0].keys() if rows else []
+                return {key: float(np.mean([float(row[key]) for row in rows])) for key in keys}
+            return {
+                "initial": average_metrics(daily_before),
+                "final": average_metrics(daily_after),
+                "reward": total_reward,
+                "actions": actions,
+                "event_shortage_reduction": event_shortage_reduction,
+                "event_skill_reduction": event_skill_reduction,
+                "shortage_resolved": int(shortage_resolved),
+                "skill_resolved": int(skill_resolved),
+            }
 
-        ppo_final = env._all_metrics()
-
-        # Paired no-op baseline: same forced events, no adaptation.
-        base_env = make_env(data, roster, config, config.seed + 10000 + i)
-        base_state = base_env.reset(start_date=str(start.date()), forced_events=forced_events)
-        base_initial = base_env._all_metrics()
-        base_total = 0.0
-        baseline_event_shortage_reduction = 0.0
-        baseline_event_skill_reduction = 0.0
-        while not base_env.done:
-            base_state, reward, done, info = base_env.step(0)
-            base_total += reward
-            baseline_event_shortage_reduction += info["event_shortage_reduction"]
-            baseline_event_skill_reduction += info["event_skill_shortage_reduction"]
-        base_final = base_env._all_metrics()
-
+        adaptive = run_episode(True)
+        baseline = run_episode(False)
+        a, b = adaptive["final"], baseline["final"]
         records.append({
             "episode": i + 1,
             "start_date": str(start.date()),
             "target_unit": target_unit,
             "target_shift": target_shift,
-            "initial_coverage": initial_metrics["coverage"],
-            "ppo_final_coverage": ppo_final["coverage"],
-            "baseline_final_coverage": base_final["coverage"],
-            "ppo_final_shortage": ppo_final["shortage"],
-            "baseline_final_shortage": base_final["shortage"],
-            "ppo_final_skill_shortage": ppo_final["skill_shortage"],
-            "baseline_final_skill_shortage": base_final["skill_shortage"],
-            "ppo_workload_gini": ppo_final["workload_gini"],
-            "baseline_workload_gini": base_final["workload_gini"],
-            "ppo_total_reward": ppo_total,
-            "baseline_total_reward": base_total,
-            "ppo_reassignments": sum(a.get("type") == "reassign" for a in ppo_actions),
-            "ppo_event_shortage_reduction": ppo_event_shortage_reduction,
-            "baseline_event_shortage_reduction": baseline_event_shortage_reduction,
-            "ppo_event_skill_shortage_reduction": ppo_event_skill_reduction,
-            "baseline_event_skill_shortage_reduction": baseline_event_skill_reduction,
-            "ppo_event_shortage_resolved": int(ppo_event_shortage_resolved),
-            "ppo_event_skill_shortage_resolved": int(ppo_event_skill_resolved),
+            "initial_coverage": adaptive["initial"]["coverage"],
+            "adaptive_final_coverage": a["coverage"],
+            "baseline_final_coverage": b["coverage"],
+            "adaptive_final_shortage": a["shortage"],
+            "baseline_final_shortage": b["shortage"],
+            "adaptive_final_skill_shortage": a["skill_shortage"],
+            "baseline_final_skill_shortage": b["skill_shortage"],
+            "adaptive_workload_gini": a["workload_gini"],
+            "baseline_workload_gini": b["workload_gini"],
+            "adaptive_total_reward": adaptive["reward"],
+            "baseline_total_reward": baseline["reward"],
+            "adaptive_reassignments": sum(x.get("type") == "reassign" for x in adaptive["actions"]),
+            "adaptive_event_shortage_reduction": adaptive["event_shortage_reduction"],
+            "baseline_event_shortage_reduction": baseline["event_shortage_reduction"],
+            "adaptive_event_skill_shortage_reduction": adaptive["event_skill_reduction"],
+            "baseline_event_skill_shortage_reduction": baseline["event_skill_reduction"],
+            "adaptive_event_shortage_resolved": adaptive["shortage_resolved"],
+            "adaptive_event_skill_shortage_resolved": adaptive["skill_resolved"],
         })
         transitions.append({
             "episode": i + 1,
             "start_date": str(start.date()),
             "forced_event": forced,
-            "ppo_actions": ppo_actions,
+            "adaptive_actions": adaptive["actions"],
+            "baseline_actions": baseline["actions"],
         })
     return records, transitions
 
 
-def run_v4(
+def run_v4_4(
     dataset_path: str,
     roster_path: Optional[str] = None,
-    output_dir: str = "v4_outputs",
+    output_dir: str = "v4_4_outputs",
     episodes: int = 150,
     eval_episodes: int = 20,
     time_limit: int = 120,
@@ -562,52 +681,59 @@ def run_v4(
     data, roster = load_v2_baseline(dataset_path, roster_path, time_limit)
 
     agent, history, state_dim, action_dim = train_agent(data, roster, config)
-    model_path = os.path.join(output_dir, "v4_ppo_model.pt")
+    model_path = os.path.join(output_dir, "v4_4_ppo_model.pt")
     agent.save(model_path)
 
-    history_path = os.path.join(output_dir, "v4_training_history.json")
+    history_path = os.path.join(output_dir, "v4_4_training_history.json")
     with open(history_path, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
     evaluation, transitions = evaluate_policy(data, roster, agent, config, eval_episodes)
-    eval_path = os.path.join(output_dir, "v4_evaluation.csv")
+    eval_path = os.path.join(output_dir, "v4_4_evaluation.csv")
     pd.DataFrame(evaluation).to_csv(eval_path, index=False)
 
-    transitions_path = os.path.join(output_dir, "v4_evaluation_transitions.json")
+    transitions_path = os.path.join(output_dir, "v4_4_evaluation_transitions.json")
     with open(transitions_path, "w", encoding="utf-8") as f:
         json.dump(transitions, f, indent=2)
 
     df = pd.DataFrame(evaluation)
     # Event-level improvement is the primary V4.1 diagnostic.
     summary = {
-        "version": "4.1",
-        "description": "Event-aware PPO training and paired dynamic evaluation on the V3 environment",
+        "version": "4.4",
+        "description": "Constrained PPO-assisted scheduler with measured candidate lookahead and paired episode-wide evaluation. Metrics are averaged over every day in each episode, not only the final day.",
         "state_dim": state_dim,
         "action_dim": action_dim,
         "training_episodes": episodes,
         "evaluation_episodes": eval_episodes,
         "device": str(agent.device),
-        "mean_ppo_coverage": float(df["ppo_final_coverage"].mean()),
+        "mean_adaptive_coverage": float(df["adaptive_final_coverage"].mean()),
         "mean_noop_coverage": float(df["baseline_final_coverage"].mean()),
-        "mean_ppo_shortage": float(df["ppo_final_shortage"].mean()),
+        "mean_adaptive_shortage": float(df["adaptive_final_shortage"].mean()),
         "mean_noop_shortage": float(df["baseline_final_shortage"].mean()),
-        "mean_ppo_skill_shortage": float(df["ppo_final_skill_shortage"].mean()),
+        "mean_adaptive_skill_shortage": float(df["adaptive_final_skill_shortage"].mean()),
         "mean_noop_skill_shortage": float(df["baseline_final_skill_shortage"].mean()),
-        "mean_ppo_workload_gini": float(df["ppo_workload_gini"].mean()),
+        "mean_adaptive_workload_gini": float(df["adaptive_workload_gini"].mean()),
         "mean_noop_workload_gini": float(df["baseline_workload_gini"].mean()),
-        "mean_ppo_reassignments": float(df["ppo_reassignments"].mean()),
-        "mean_ppo_event_shortage_reduction": float(df["ppo_event_shortage_reduction"].mean()),
+        "mean_paired_coverage_delta_adaptive_minus_noop": float((df["adaptive_final_coverage"] - df["baseline_final_coverage"]).mean()),
+        "mean_paired_shortage_delta_adaptive_minus_noop": float((df["adaptive_final_shortage"] - df["baseline_final_shortage"]).mean()),
+        "mean_paired_skill_shortage_delta_adaptive_minus_noop": float((df["adaptive_final_skill_shortage"] - df["baseline_final_skill_shortage"]).mean()),
+        "mean_paired_workload_gini_delta_adaptive_minus_noop": float((df["adaptive_workload_gini"] - df["baseline_workload_gini"]).mean()),
+        "episodes_with_better_coverage": int((df["adaptive_final_coverage"] > df["baseline_final_coverage"]).sum()),
+        "episodes_with_lower_shortage": int((df["adaptive_final_shortage"] < df["baseline_final_shortage"]).sum()),
+        "episodes_with_lower_skill_shortage": int((df["adaptive_final_skill_shortage"] < df["baseline_final_skill_shortage"]).sum()),
+        "mean_adaptive_reassignments": float(df["adaptive_reassignments"].mean()),
+        "mean_adaptive_event_shortage_reduction": float(df["adaptive_event_shortage_reduction"].mean()),
         "mean_baseline_event_shortage_reduction": float(df["baseline_event_shortage_reduction"].mean()),
-        "mean_ppo_event_skill_shortage_reduction": float(df["ppo_event_skill_shortage_reduction"].mean()),
+        "mean_adaptive_event_skill_shortage_reduction": float(df["adaptive_event_skill_shortage_reduction"].mean()),
         "mean_baseline_event_skill_shortage_reduction": float(df["baseline_event_skill_shortage_reduction"].mean()),
-        "event_shortage_resolution_rate": float(df["ppo_event_shortage_resolved"].mean()),
-        "event_skill_shortage_resolution_rate": float(df["ppo_event_skill_shortage_resolved"].mean()),
+        "adaptive_event_shortage_resolution_rate": float(df["adaptive_event_shortage_resolved"].mean()),
+        "adaptive_event_skill_shortage_resolution_rate": float(df["adaptive_event_skill_shortage_resolved"].mean()),
     }
-    summary_path = os.path.join(output_dir, "v4_evaluation_summary.json")
+    summary_path = os.path.join(output_dir, "v4_4_evaluation_summary.json")
     with open(summary_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)
 
-    logger.info("V4 completed. Summary: %s", summary)
+    logger.info("V4.4 completed. Summary: %s", summary)
     return {
         "model": model_path,
         "training_history": history_path,
@@ -618,16 +744,16 @@ def run_v4(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Train/evaluate Version 4 PPO hospital workforce agent.")
+    parser = argparse.ArgumentParser(description="Train/evaluate Version 4.4 adaptive RL-assisted hospital workforce agent.")
     parser.add_argument("--dataset", required=True, help="Path to hospital_hrm_dataset.xlsx")
     parser.add_argument("--roster", default=None, help="Optional V2 baseline roster CSV")
-    parser.add_argument("--output", default="v4_outputs")
+    parser.add_argument("--output", default="v4_4_outputs")
     parser.add_argument("--episodes", type=int, default=150)
     parser.add_argument("--eval-episodes", type=int, default=20)
     parser.add_argument("--time-limit", type=int, default=120)
     args = parser.parse_args()
 
-    outputs = run_v4(
+    outputs = run_v4_4(
         dataset_path=args.dataset,
         roster_path=args.roster,
         output_dir=args.output,
@@ -635,6 +761,6 @@ if __name__ == "__main__":
         eval_episodes=args.eval_episodes,
         time_limit=args.time_limit,
     )
-    print("\nVersion 4 outputs:")
+    print("\nVersion 4.4 outputs:")
     for key, path in outputs.items():
         print(f"- {key}: {path}")
